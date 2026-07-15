@@ -6,8 +6,12 @@ import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
 import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middlewares/errorHandler.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
+
+// Initializes the Firebase Admin SDK as a side effect of the import
+import "./config/firebaseAdmin.js";
 
 const app = express();
 
@@ -40,13 +44,14 @@ app.get("/api/health", (req, res) => {
   res.json({ success: true, message: "BloodBridge API is running" });
 });
 
+app.use("/api/auth", authRoutes);
+
 /*
   ---- Route mounting (added progressively) ----
-  Step 6 will add:
-    app.use("/api/auth", authRoutes);
+  Step 7-9 will add:
     app.use("/api/users", userRoutes);
-  Step 10 will add:
     app.use("/api/requests", bloodRequestRoutes);
+  Step 10 will add:
     app.use("/api/notifications", notificationRoutes);
     app.use("/api/admin", adminRoutes);
 */
