@@ -57,11 +57,57 @@ export const switchMode = async (req, res, next) => {
   }
 };
 
-// @route  GET /api/users/donation-history
-export const getDonationHistory = async (req, res, next) => {
+// @route  GET /api/users/search-donors
+// @desc   Search for available donors by blood group / location
+export const searchDonors = async (req, res, next) => {
   try {
-    const history = await DonationHistory.find({ donor: req.user._id }).sort({ donationDate: -1 });
-    res.json({ success: true, history });
+    const { bloodGroup, district, upazila, verifiedOnly } = req.query;
+
+    const filter = { role: { $ne: "admin" } };
+    if (bloodGroup) filter.bloodGroup = bloodGroup;
+    if (district) filter.district = district;
+    if (upazila) filter.upazila = new RegExp(upazila, "i");
+    if (verifiedOnly === "true") filter.isVerified = true;
+    filter.isAvailable = true;
+
+    const donors = await User.find(filter)
+      .select("fullName bloodGroup district upazila photoURL isVerified isAvailable lastDonationDate")
+      .limit(50);
+
+    res.json({ success: true, donors });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// @route  PATCH /api/users/saved-donors/:donorId
+// @desc   Add/remove a donor from the logged-in seeker's saved list
+export const toggleSavedDonor = async (req, res, next) => {
+  try {
+    const { donorId } = req.params;
+    const already = req.user.savedDonors.some((id) => id.toString() === donorId);
+
+    if (already) {
+      req.user.savedDonors = req.user.savedDonors.filter((id) => id.toString() !== donorId);
+    } else {
+      req.user.savedDonors.push(donorId);
+    }
+
+    await req.user.save();
+    res.json({ success: true, savedDonors: req.user.savedDonors, saved: !already });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// @route  GET /api/users/saved-donors
+export const getSavedDonors = async (req, res, next) => {
+  try {
+    const populated = await req.user.populate({
+      path: "savedDonors",
+      select: "fullName bloodGroup district upazila photoURL isVerified isAvailable",
+    });
+    res.json({ success: true, donors: populated.savedDonors });
   } catch (err) {
     next(err);
   }

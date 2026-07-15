@@ -8,6 +8,7 @@ import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middlewares/errorHandler.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import requestRoutes from "./routes/requestRoutes.js";
 
 dotenv.config();
 
@@ -47,12 +48,11 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/requests", requestRoutes);
 
 /*
   ---- Route mounting (added progressively) ----
-  Step 8-9 will add:
-    app.use("/api/requests", bloodRequestRoutes);
-  Step 10 will add:
+  Step 9-10 will add:
     app.use("/api/notifications", notificationRoutes);
     app.use("/api/admin", adminRoutes);
 */

@@ -28,6 +28,7 @@ const donorLinks = [
 
 const seekerLinks = [
   { to: "/dashboard/seeker", label: "Overview", icon: FiGrid, end: true },
+  { to: "/dashboard/seeker/profile", label: "Profile", icon: FiUser },
   { to: "/dashboard/seeker/search", label: "Search Donor", icon: FiSearch },
   { to: "/dashboard/seeker/emergency", label: "Emergency Request", icon: FiAlertTriangle },
   { to: "/dashboard/seeker/my-requests", label: "My Requests", icon: FiList },

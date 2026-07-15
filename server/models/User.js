@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema(
     isAvailable: { type: Boolean, default: true }, // donor availability toggle
     isVerified: { type: Boolean, default: false }, // admin-verified donor badge
     lastDonationDate: { type: Date, default: null },
+
+    // Seeker's bookmarked donors
+    savedDonors: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true } // adds createdAt / updatedAt
 );

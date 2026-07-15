@@ -5,6 +5,9 @@ import {
   toggleAvailability,
   switchMode,
   getDonationHistory,
+  searchDonors,
+  toggleSavedDonor,
+  getSavedDonors,
 } from "../controllers/userController.js";
 
 const router = express.Router();
@@ -15,5 +18,8 @@ router.put("/profile", updateProfile);
 router.patch("/availability", toggleAvailability);
 router.patch("/mode", switchMode);
 router.get("/donation-history", getDonationHistory);
+router.get("/search-donors", searchDonors);
+router.get("/saved-donors", getSavedDonors);
+router.patch("/saved-donors/:donorId", toggleSavedDonor);
 
 export default router;

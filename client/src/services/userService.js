@@ -19,3 +19,18 @@ export const getDonationHistory = async () => {
   const { data } = await axiosInstance.get("/users/donation-history");
   return data;
 };
+
+export const searchDonors = async (filters) => {
+  const { data } = await axiosInstance.get("/users/search-donors", { params: filters });
+  return data;
+};
+
+export const toggleSavedDonor = async (donorId) => {
+  const { data } = await axiosInstance.patch(`/users/saved-donors/${donorId}`);
+  return data;
+};
+
+export const getSavedDonors = async () => {
+  const { data } = await axiosInstance.get("/users/saved-donors");
+  return data;
+};
