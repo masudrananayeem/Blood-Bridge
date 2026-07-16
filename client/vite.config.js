@@ -17,6 +17,7 @@ export default defineConfig({
           "vendor-react": ["react", "react-dom", "react-router-dom"],
           "vendor-firebase": ["firebase/app", "firebase/auth"],
           "vendor-motion": ["framer-motion"],
+          "vendor-charts": ["recharts"],
         },
       },
     },
